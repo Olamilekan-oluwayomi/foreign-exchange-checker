@@ -5,8 +5,14 @@
   --font-mono: "JetBrains Mono", monospace;
 }
 
+:root {
+  font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1rem);
+}
+
 body {
   font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 @keyframes marquee {

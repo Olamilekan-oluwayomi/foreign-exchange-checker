@@ -29,7 +29,7 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 animate-fadeIn">
       <div className="bg-neutral-900 w-full sm:w-96 rounded-t-2xl sm:rounded-2xl p-4 max-h-[70vh] flex flex-col animate-slideUp sm:animate-fadeScale">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-bold tracking-widest text-neutral-300">
+          <p className="text-sm sm:text-xs font-bold tracking-widest text-neutral-300">
             SELECT {activePicker === "from" ? "SEND" : "RECEIVE"} CURRENCY
           </p>
           <button onClick={onClose} className="text-neutral-500 text-sm">
@@ -42,7 +42,7 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
           placeholder="Search currency..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-neutral-800 text-white text-xs rounded-lg px-3 py-2 outline-none mb-3 placeholder:text-neutral-500"
+          className="bg-neutral-800 text-white text-sm sm:text-xs rounded-lg px-3 py-2 outline-none mb-3 placeholder:text-neutral-500"
           autoFocus
         />
 
@@ -61,10 +61,12 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
                 alt={code}
                 className="w-6 h-6 rounded-full object-cover shrink-0"
               />
-              <span className="text-md font-bold text-white tracking-widest">
+              <span className="text-[0.95rem] sm:text-md font-bold text-white tracking-widest">
                 {code}
               </span>
-              <span className="text-md text-neutral-500 truncate">{name}</span>
+              <span className="text-[0.95rem] sm:text-md text-neutral-500 truncate">
+                {name}
+              </span>
             </button>
           ))}
         </div>

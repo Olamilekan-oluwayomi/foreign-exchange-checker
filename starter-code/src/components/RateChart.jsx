@@ -75,10 +75,10 @@ export default function RateChart({ fromCurrency, toCurrency, range }) {
   return (
     <div className="bg-neutral-900 rounded-xl p-4 mt-3">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-neutral-300 text-xs font-bold tracking-widest">
+        <span className="text-neutral-300 text-sm sm:text-xs font-bold tracking-widest">
           {fromCurrency}/{toCurrency}
         </span>
-        <span className="text-neutral-500 text-[10px] tracking-widest">
+        <span className="text-neutral-500 text-[11px] sm:text-[10px] tracking-widest">
           {lastEntry
             ? `${lastEntry.rate.toFixed(4)} · ${new Date(lastEntry.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short" }).toUpperCase()} CET`
             : "—"}
@@ -86,7 +86,7 @@ export default function RateChart({ fromCurrency, toCurrency, range }) {
       </div>
 
       {isLoading ? (
-        <div className="h-48 flex items-center justify-center text-neutral-600 text-xs tracking-widest">
+        <div className="h-48 flex items-center justify-center text-neutral-600 text-sm sm:text-xs tracking-widest">
           LOADING...
         </div>
       ) : (

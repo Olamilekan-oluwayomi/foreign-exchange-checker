@@ -80,7 +80,7 @@ export default function Ticker() {
 
   return (
     <div className="bg-neutral-900 overflow-hidden flex items-center text-xs whitespace-nowrap border-b border-neutral-800">
-      <span className="bg-lime-400 text-black font-bold px-3 py-1.5 shrink-0 z-10">
+      <span className="bg-lime-400 text-black font-bold px-3 py-1.5 shrink-0 z-10 text-[0.95rem] sm:text-xs">
         LIVE MARKETS
       </span>
 

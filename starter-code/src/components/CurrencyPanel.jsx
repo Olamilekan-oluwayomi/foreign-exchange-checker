@@ -13,7 +13,7 @@ export default function CurrencyPanel({
 
   return (
     <div className="bg-neutral-900 rounded-xl p-4 flex-1">
-      <p className="text-neutral-500 text-[10px] tracking-widest mb-2">
+      <p className="text-neutral-500 text-[14px] sm:text-xs tracking-widest mb-2">
         {label}
       </p>
       <div className="flex items-center justify-between gap-2">
@@ -23,11 +23,11 @@ export default function CurrencyPanel({
             inputMode="decimal"
             defaultValue={amount}
             onChange={(e) => onChange(e.target.value)}
-            className="bg-transparent text-2xl sm:text-3xl font-bold text-white w-2/3 outline-none"
+            className="bg-transparent text-2xl sm:text-2xl font-bold text-white w-2/3 outline-none"
           />
         ) : (
           <span
-            className={`text-2xl sm:text-3xl font-bold ${accent ? "text-lime-400" : "text-white"}`}
+            className={`text-2xl sm:text-2xl font-bold ${accent ? "text-lime-400" : "text-white"}`}
           >
             {amount}
           </span>
@@ -36,7 +36,7 @@ export default function CurrencyPanel({
         <button
           type="button"
           onClick={onOpenPicker}
-          className="flex items-center gap-1.5 bg-neutral-800 rounded-full px-3 py-1.5 text-xs shrink-0 cursor-pointer"
+          className="flex items-center gap-1.5 bg-neutral-800 rounded-full px-3 py-1.5 text-[11px] sm:text-sm shrink-0 cursor-pointer"
         >
           {flagUrl && (
             <img

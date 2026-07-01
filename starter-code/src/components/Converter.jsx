@@ -17,7 +17,7 @@ export default function Converter({
 }) {
   return (
     <div className="px-4 py-5">
-      <h2 className="text-neutral-300 text-sm lg:text-xl tracking-widest mb-4">
+      <h2 className="text-neutral-300 text-[0.95rem] sm:text-sm lg:text-lg tracking-widest mb-4">
         CHECK THE RATE
       </h2>
 
@@ -54,14 +54,14 @@ export default function Converter({
         <div className="border-t border-dashed border-neutral-800 my-4" />
 
         <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
-          <p className="text-neutral-500 text-md md:text-lg">
+          <p className="text-neutral-500 text-[0.95rem] sm:text-sm md:text-base">
             1 {fromCurrency} = {rate ? rate.toFixed(4) : "—"} {toCurrency}
           </p>
 
           <div className="flex gap-2">
             <button
               onClick={onFavorite}
-              className={`"bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-[13px]  lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer ${
+              className={`"bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-xs md:text-base font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer ${
                 isFavorited
                   ? "bg-lime-400 text-black"
                   : "bg-neutral-800 text-neutral-200"
@@ -71,7 +71,7 @@ export default function Converter({
             </button>
             <button
               onClick={onLog}
-              className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-[13px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer"
+              className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-xs md:text-base font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer"
             >
               LOG CONVERSION
             </button>
