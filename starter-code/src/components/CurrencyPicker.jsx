@@ -6,6 +6,15 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") onClose();
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  useEffect(() => {
     async function fetchCurrencies() {
       try {
         const res = await fetch("https://api.frankfurter.dev/v1/currencies");
