@@ -1,6 +1,15 @@
 import CurrencyPanel from "./CurrencyPanel";
 
-export default function Converter() {
+export default function Converter({
+  amount,
+  setAmount,
+  fromCurrency,
+  setFromCurrency,
+  toCurrency,
+  setToCurrency,
+  convertedAmount,
+  rate,
+}) {
   return (
     <div className="px-4 py-5">
       <h2 className="text-neutral-300 text-sm lg:text-xl tracking-widest mb-4">
@@ -11,10 +20,10 @@ export default function Converter() {
         <div className="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-3">
           <CurrencyPanel
             label="SEND"
-            amount="1,000"
-            currencyCode="USD"
-            flag="🇺🇸"
+            amount={amount}
+            currencyCode={fromCurrency}
             editable
+            onChange={setAmount}
           />
 
           <div className="flex justify-center items-center">
@@ -26,9 +35,8 @@ export default function Converter() {
 
           <CurrencyPanel
             label="RECEIVE"
-            amount="853.02"
-            currencyCode="EUR"
-            flag="🇪🇺"
+            amount={convertedAmount ?? "—"}
+            currencyCode={toCurrency}
             accent
           />
         </div>
