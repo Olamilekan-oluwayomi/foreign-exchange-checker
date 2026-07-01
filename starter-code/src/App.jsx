@@ -26,11 +26,11 @@ export default function App() {
       <Header />
       <Ticker />
       <Converter />
-      <Tabs />
-      <History />
-      <Compare />
-      <Favorites />
-      <Log />
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab === "history" && <History />}
+      {activeTab === "compare" && <Compare />}
+      {activeTab === "favorites" && <Favorites />}
+      {activeTab === "log" && <Log />}
     </div>
   );
 }

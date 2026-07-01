@@ -36,15 +36,15 @@ export default function Converter() {
         <div className="border-t border-dashed border-neutral-800 my-4" />
 
         <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
-          <p className="text-neutral-500 text-sm md:text-lg">
+          <p className="text-neutral-500 text-md md:text-lg">
             1 USD = 0.8530 EUR
           </p>
 
           <div className="flex gap-2">
-            <button className="bg-lime-400 text-black text-[11px]  lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
+            <button className="bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-[13px]  lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
               ★ FAVORITED
             </button>
-            <button className="border-2 border-lime-900 text-lime-400 text-[11px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
+            <button className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-[13px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
               LOG CONVERSION
             </button>
           </div>
