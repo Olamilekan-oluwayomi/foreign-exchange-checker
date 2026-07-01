@@ -136,7 +136,27 @@ export default function App() {
           setRange={setRange}
         />
       )}
-      {activeTab === "compare" && <Compare />}
+      {activeTab === "compare" && (
+        <Compare
+          fromCurrency={fromCurrency}
+          amount={amount}
+          favorites={favorites}
+          onToggleFavorite={(to) => {
+            const exists = favorites.some(
+              (fav) => fav.from === fromCurrency && fav.to === to,
+            );
+            if (exists) {
+              setFavorites(
+                favorites.filter(
+                  (fav) => !(fav.from === fromCurrency && fav.to === to),
+                ),
+              );
+            } else {
+              setFavorites([...favorites, { from: fromCurrency, to }]);
+            }
+          }}
+        />
+      )}
       {activeTab === "favorites" && (
         <Favorites
           favorites={favorites}
