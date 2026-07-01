@@ -60,6 +60,12 @@ export default function App() {
     setLog([...log, newItem]);
   }
 
+  function handleLoadFavorite(from, to) {
+    setFromCurrency(from);
+    setToCurrency(to);
+    setActiveTab("history");
+  }
+
   useEffect(() => {
     if (!amount || !fromCurrency || !toCurrency) {
       setConvertedAmount(null);
@@ -166,6 +172,7 @@ export default function App() {
               favorites.filter((fav) => !(fav.from === from && fav.to === to)),
             )
           }
+          onLoadPair={handleLoadFavorite}
         />
       )}
       {activeTab === "log" && (

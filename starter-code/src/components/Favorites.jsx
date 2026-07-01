@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { getFlagUrl } from "../utils/currencyMeta";
 
-export default function Favorites({ favorites, amount, onUnfavorite }) {
+export default function Favorites({
+  favorites,
+  amount,
+  onUnfavorite,
+  onLoadPair,
+}) {
   const [rates, setRates] = useState({});
   const [names, setNames] = useState({});
 
@@ -16,7 +21,6 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
         const namesData = await namesRes.json();
         setNames(namesData);
 
-        // fetch rate for each pair individually
         const results = await Promise.all(
           favorites.map((fav) =>
             fetch(
@@ -71,8 +75,8 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
                 i !== favorites.length - 1 ? "border-b border-neutral-900" : ""
               }`}
             >
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex -space-x-2 shrink-0">
                   <img
                     src={getFlagUrl(fav.from)}
                     alt={fav.from}
@@ -84,17 +88,17 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
                     className="w-6 h-6 rounded-full object-cover ring-2 ring-neutral-950"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-bold text-white tracking-widest">
                     {key}
                   </p>
-                  <p className="text-[11px] sm:text-xs text-neutral-500">
+                  <p className="text-[11px] sm:text-xs text-neutral-500 ">
                     {names[fav.from] ?? fav.from} → {names[fav.to] ?? fav.to}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col items-end gap-1 shrink-0">
                 <div className="text-right">
                   <p className="text-sm font-bold text-white">
                     {value ? value.toLocaleString() : "—"}
@@ -103,12 +107,20 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
                     @ {value ? (value / amount).toFixed(4) : "—"}
                   </p>
                 </div>
-                <button
-                  onClick={() => onUnfavorite(fav.from, fav.to)}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm border bg-lime-900/30 border-lime-800 text-lime-400"
-                >
-                  ★
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onLoadPair(fav.from, fav.to)}
+                    className="text-[10px] font-bold tracking-widest text-lime-400 border border-lime-900 px-2 py-1 rounded-lg hover:bg-lime-400 hover:text-black transition-colors"
+                  >
+                    LOAD
+                  </button>
+                  <button
+                    onClick={() => onUnfavorite(fav.from, fav.to)}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-sm border bg-lime-900/30 border-lime-800 text-lime-400"
+                  >
+                    ★
+                  </button>
+                </div>
               </div>
             </div>
           );
