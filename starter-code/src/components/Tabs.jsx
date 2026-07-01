@@ -35,6 +35,9 @@ export default function Tabs({
       <button
         className="sm:hidden w-full flex items-center justify-between bg-neutral-900 rounded-xl px-4 py-3 text-lg font-bold tracking-widest text-white"
         onClick={() => setIsDropdown((prev) => !prev)}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setIsDropdown(false);
+        }}
       >
         <span>{tabs.find((t) => t.id === activeTab).label}</span>
         <img src={chevronDown} alt="" className="w-6 h-6" />
