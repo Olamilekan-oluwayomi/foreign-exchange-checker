@@ -7,7 +7,7 @@ export default function RangeSelector({ range, setRange }) {
         <button
           key={r}
           onClick={() => setRange(r)}
-          className={`text-[11px] font-bold tracking-wide px-2.5 py-1 rounded-md cursor-pointer ${
+          className={`text-[12px] sm:text-sm font-bold tracking-wide px-2.5 py-1 rounded-md cursor-pointer ${
             r === range ? "bg-neutral-700 text-white" : "text-neutral-500"
           }`}
         >

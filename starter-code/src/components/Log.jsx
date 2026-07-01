@@ -1,7 +1,7 @@
 export default function Log({ log, onDelete, onClear }) {
   if (log.length === 0) {
     return (
-      <div className="px-4 py-10 text-center text-neutral-500 text-xs tracking-widest">
+      <div className="px-4 py-10 text-center text-neutral-500 text-sm tracking-widest">
         NO CONVERSIONS LOGGED YET
       </div>
     );
@@ -11,13 +11,13 @@ export default function Log({ log, onDelete, onClear }) {
     <div className="px-4 py-4">
       <div className="bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
-          <p className="text-xs text-neutral-500 tracking-widest">
+          <p className="text-[11px] sm:text-xs text-neutral-500 tracking-widest">
             CONVERSION LOG{" "}
             <span className="text-white font-bold">{log.length} ENTRIES</span>
           </p>
           <button
             onClick={onClear}
-            className="text-[10px] text-red-400 tracking-widest"
+            className="text-[11px] sm:text-xs text-red-400 tracking-widest"
           >
             CLEAR ALL
           </button>
@@ -40,7 +40,7 @@ export default function Log({ log, onDelete, onClear }) {
                 </span>{" "}
                 <span className="text-neutral-500">{entry.to}</span>
               </p>
-              <p className="text-[10px] text-neutral-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5">
                 @ {entry.rate.toFixed(4)} ·{" "}
                 {new Date(entry.date).toLocaleString()}
               </p>

@@ -17,7 +17,7 @@ export default function Converter({
 }) {
   return (
     <div className="px-4 py-5">
-      <h2 className="text-neutral-300 text-[0.95rem] sm:text-sm lg:text-lg tracking-widest mb-4">
+      <h2 className="text-neutral-300 text-[0.95rem] sm:text-base lg:text-lg tracking-widest mb-4">
         CHECK THE RATE
       </h2>
 

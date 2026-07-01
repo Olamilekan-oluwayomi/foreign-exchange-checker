@@ -64,14 +64,14 @@ export default function StatCards({ fromCurrency, toCurrency }) {
       ];
 
   return (
-    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+    <div className="grid grid-cols-2 items-center sm:flex sm:flex-wrap gap-2">
       {items.map((s) => (
         <div key={s.label} className="bg-neutral-900 rounded-xl p-3 sm:w-fit">
-          <p className="text-neutral-500 text-[10px] tracking-widest mb-1">
+          <p className="text-neutral-500 text-[14px] sm:text-lg tracking-widest mb-1">
             {s.label}
           </p>
           <p
-            className={`text-sm font-bold whitespace-nowrap ${
+            className={`text-md sm:text-md font-bold whitespace-nowrap ${
               s.accent
                 ? s.up
                   ? "text-lime-400"

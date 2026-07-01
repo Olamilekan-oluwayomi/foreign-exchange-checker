@@ -13,7 +13,7 @@ export default function CurrencyPanel({
 
   return (
     <div className="bg-neutral-900 rounded-xl p-4 flex-1">
-      <p className="text-neutral-500 text-[14px] sm:text-xs tracking-widest mb-2">
+      <p className="text-neutral-500 text-[14px] sm:text-lg tracking-widest mb-2">
         {label}
       </p>
       <div className="flex items-center justify-between gap-2">

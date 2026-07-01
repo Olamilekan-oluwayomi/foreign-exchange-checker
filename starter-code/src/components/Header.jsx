@@ -7,7 +7,7 @@ export default function Header() {
         <img src={logo} alt="FX Checker logo" className="h-7 w-auto" />
       </div>
 
-      <p className="text-neutral-200 text-[10px] sm:text-sm lg:text-md tracking-widest leading-none whitespace-nowrap">
+      <p className="text-neutral-200 text-[10px] sm:text-base lg:text-md tracking-widest leading-none whitespace-nowrap">
         55 CURRENCIES · ECB · ECB DATA
       </p>
     </header>

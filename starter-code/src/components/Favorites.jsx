@@ -42,7 +42,7 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
 
   if (favorites.length === 0) {
     return (
-      <div className="px-4 py-10 text-center text-neutral-500 text-xs tracking-widest">
+      <div className="px-4 py-10 text-center text-neutral-500 text-sm tracking-widest">
         NO FAVORITES YET — STAR A PAIR TO SAVE IT HERE
       </div>
     );
@@ -52,7 +52,7 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
     <div className="px-4 py-4">
       <div className="bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
-          <p className="text-xs text-neutral-500 tracking-widest">
+          <p className="text-[11px] sm:text-xs text-neutral-500 tracking-widest">
             FAVORITES{" "}
             <span className="text-white font-bold">
               {favorites.length} PAIRS
@@ -85,10 +85,10 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
                   />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-white tracking-widest">
+                  <p className="text-sm font-bold text-white tracking-widest">
                     {key}
                   </p>
-                  <p className="text-[10px] text-neutral-500">
+                  <p className="text-[11px] sm:text-xs text-neutral-500">
                     {names[fav.from] ?? fav.from} → {names[fav.to] ?? fav.to}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function Favorites({ favorites, amount, onUnfavorite }) {
                   <p className="text-sm font-bold text-white">
                     {value ? value.toLocaleString() : "—"}
                   </p>
-                  <p className="text-[10px] text-neutral-500">
+                  <p className="text-[11px] sm:text-xs text-neutral-500">
                     @ {value ? (value / amount).toFixed(4) : "—"}
                   </p>
                 </div>

@@ -33,7 +33,7 @@ export default function Tabs({
             return (
               <button
                 key={tab.id}
-                className={`w-full flex items-center justify-between px-4 py-3 text-md font-bold tracking-widest ${
+                className={`w-full flex items-center justify-between px-4 py-3 text-[0.95rem] font-bold tracking-widest ${
                   isActive ? "text-white" : "text-neutral-500"
                 }`}
                 onClick={() => {
@@ -43,7 +43,7 @@ export default function Tabs({
               >
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
-                  <span className="bg-lime-900/40 text-lime-400 text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="bg-lime-900/40 text-lime-400 text-[11px] rounded-full w-5 h-5 flex items-center justify-center">
                     {tab.count}
                   </span>
                 )}
@@ -60,7 +60,7 @@ export default function Tabs({
           return (
             <button
               key={tab.id}
-              className={`flex items-center gap-1.5 pb-3 text-lg font-bold tracking-widest border-b-2 -mb-px cursor-pointer ${
+              className={`flex items-center gap-1.5 pb-3 text-[0.95rem] sm:text-base font-bold tracking-widest border-b-2 -mb-px cursor-pointer ${
                 isActive
                   ? "text-white border-lime-400"
                   : "text-neutral-500 border-transparent"

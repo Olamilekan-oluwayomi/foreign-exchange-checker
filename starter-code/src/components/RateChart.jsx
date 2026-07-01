@@ -75,7 +75,7 @@ export default function RateChart({ fromCurrency, toCurrency, range }) {
   return (
     <div className="bg-neutral-900 rounded-xl p-4 mt-3">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-neutral-300 text-sm sm:text-xs font-bold tracking-widest">
+        <span className="text-neutral-300 text-md sm:text-xs font-bold tracking-widest">
           {fromCurrency}/{toCurrency}
         </span>
         <span className="text-neutral-500 text-[11px] sm:text-[10px] tracking-widest">
@@ -84,9 +84,9 @@ export default function RateChart({ fromCurrency, toCurrency, range }) {
             : "—"}
         </span>
       </div>
-
+      jsx
       {isLoading ? (
-        <div className="h-48 flex items-center justify-center text-neutral-600 text-sm sm:text-xs tracking-widest">
+        <div className="h-[200px] flex items-center justify-center text-neutral-600 text-xs tracking-widest">
           LOADING...
         </div>
       ) : (
@@ -106,13 +106,13 @@ export default function RateChart({ fromCurrency, toCurrency, range }) {
             />
             <XAxis
               dataKey="date"
-              tick={{ fill: "#525252", fontSize: 10 }}
+              tick={{ fill: "#525252", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
               interval="preserveStartEnd"
             />
             <YAxis
-              tick={{ fill: "#525252", fontSize: 10 }}
+              tick={{ fill: "#525252", fontSize: 14 }}
               tickLine={false}
               axisLine={false}
               domain={["auto", "auto"]}

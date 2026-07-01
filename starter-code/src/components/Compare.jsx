@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
 import { getFlagUrl } from "../utils/currencyMeta";
 
-const DEFAULT_PAIRS = ["GBP", "JPY", "CHF", "CAD", "AUD", "INR", "CNY", "BDT"];
+const BASE_PAIRS = [
+  "USD",
+  "GBP",
+  "JPY",
+  "CHF",
+  "CAD",
+  "AUD",
+  "INR",
+  "CNY",
+  "BDT",
+];
 
 export default function Compare({
   fromCurrency,
@@ -11,6 +21,8 @@ export default function Compare({
 }) {
   const [rates, setRates] = useState({});
   const [names, setNames] = useState({});
+
+  const DEFAULT_PAIRS = BASE_PAIRS.filter((code) => code !== fromCurrency);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,13 +53,13 @@ export default function Compare({
     <div className="px-4 py-4">
       <div className="bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
-          <p className="text-xs text-neutral-500 tracking-widest">
+          <p className="text-sm text-neutral-500 tracking-widest">
             MULTI-CURRENCY{" "}
             <span className="text-white font-bold">
               {amount.toLocaleString()} FROM {fromCurrency}
             </span>
           </p>
-          <p className="text-xs text-neutral-500 tracking-widest">
+          <p className="text-sm text-neutral-500 tracking-widest">
             {DEFAULT_PAIRS.length} PAIRS
           </p>
         </div>
@@ -74,10 +86,10 @@ export default function Compare({
                   className="w-6 h-6 rounded-full object-cover"
                 />
                 <div>
-                  <p className="text-xs font-bold text-white tracking-widest">
+                  <p className="text-sm font-bold text-white tracking-widest">
                     {code}
                   </p>
-                  <p className="text-[10px] text-neutral-500">
+                  <p className="text-sm lg:text-base text-neutral-500">
                     {names[code] ?? ""}
                   </p>
                 </div>
@@ -88,7 +100,7 @@ export default function Compare({
                   <p className="text-sm font-bold text-white">
                     {value ? value.toLocaleString() : "—"}
                   </p>
-                  <p className="text-[10px] text-neutral-500">
+                  <p className="text-sm lg:text-base text-neutral-500">
                     @ {value ? (value / amount).toFixed(4) : "—"}
                   </p>
                 </div>
