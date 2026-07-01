@@ -7,6 +7,7 @@ import History from "./components/History";
 import Compare from "./components/Compare";
 import Favorites from "./components/Favorites";
 import Log from "./components/Log";
+import CurrencyPicker from "./components/CurrencyPicker";
 
 export default function App() {
   const [amount, setAmount] = useState(1000);
@@ -20,6 +21,9 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState("history");
   const [range, setRange] = useState("1M");
+
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [activePicker, setActivePicker] = useState(null);
 
   useEffect(() => {
     if (!amount || !fromCurrency || !toCurrency) {
@@ -75,12 +79,27 @@ export default function App() {
         setToCurrency={setToCurrency}
         convertedAmount={convertedAmount}
         rate={rate}
+        onOpenPicker={(type) => {
+          setActivePicker(type);
+          setIsPickerOpen(true);
+        }}
       />
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === "history" && <History />}
       {activeTab === "compare" && <Compare />}
       {activeTab === "favorites" && <Favorites />}
       {activeTab === "log" && <Log />}
+
+      {isPickerOpen && (
+        <CurrencyPicker
+          activePicker={activePicker}
+          onSelect={(code) => {
+            if (activePicker === "from") setFromCurrency(code);
+            else setToCurrency(code);
+          }}
+          onClose={() => setIsPickerOpen(false)}
+        />
+      )}
     </div>
   );
 }

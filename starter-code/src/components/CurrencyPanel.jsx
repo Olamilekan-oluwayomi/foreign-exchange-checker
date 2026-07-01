@@ -7,6 +7,7 @@ export default function CurrencyPanel({
   accent,
   editable,
   onChange,
+  onOpenPicker,
 }) {
   const flagUrl = getFlagUrl(currencyCode);
 
@@ -34,7 +35,8 @@ export default function CurrencyPanel({
 
         <button
           type="button"
-          className="flex items-center gap-1.5 bg-neutral-800 rounded-full px-3 py-1.5 text-xs shrink-0"
+          onClick={onOpenPicker}
+          className="flex items-center gap-1.5 bg-neutral-800 rounded-full px-3 py-1.5 text-xs shrink-0 cursor-pointer"
         >
           {flagUrl && (
             <img

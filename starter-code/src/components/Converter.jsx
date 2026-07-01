@@ -9,6 +9,7 @@ export default function Converter({
   setToCurrency,
   convertedAmount,
   rate,
+  onOpenPicker,
 }) {
   return (
     <div className="px-4 py-5">
@@ -24,6 +25,7 @@ export default function Converter({
             currencyCode={fromCurrency}
             editable
             onChange={setAmount}
+            onOpenPicker={() => onOpenPicker("from")}
           />
 
           <div className="flex justify-center items-center">
@@ -38,6 +40,7 @@ export default function Converter({
             amount={convertedAmount ?? "—"}
             currencyCode={toCurrency}
             accent
+            onOpenPicker={() => onOpenPicker("to")}
           />
         </div>
 
@@ -45,7 +48,7 @@ export default function Converter({
 
         <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
           <p className="text-neutral-500 text-md md:text-lg">
-            1 USD = 0.8530 EUR
+            1 {fromCurrency} = {rate ? rate.toFixed(4) : "—"} {toCurrency}
           </p>
 
           <div className="flex gap-2">
