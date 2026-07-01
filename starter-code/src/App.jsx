@@ -25,6 +25,11 @@ export default function App() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [activePicker, setActivePicker] = useState(null);
 
+  function handleSwap() {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  }
+
   useEffect(() => {
     if (!amount || !fromCurrency || !toCurrency) {
       setConvertedAmount(null);
@@ -83,6 +88,7 @@ export default function App() {
           setActivePicker(type);
           setIsPickerOpen(true);
         }}
+        onSwap={handleSwap}
       />
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === "history" && <History />}

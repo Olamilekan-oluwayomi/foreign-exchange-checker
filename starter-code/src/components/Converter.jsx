@@ -10,6 +10,7 @@ export default function Converter({
   convertedAmount,
   rate,
   onOpenPicker,
+  onSwap,
 }) {
   return (
     <div className="px-4 py-5">
@@ -29,7 +30,10 @@ export default function Converter({
           />
 
           <div className="flex justify-center items-center">
-            <button className="bg-neutral-800 rounded-md w-9 h-9 flex items-center justify-center text-white shrink-0 cursor-pointer">
+            <button
+              onClick={onSwap}
+              className="bg-neutral-800 rounded-md w-9 h-9 flex items-center justify-center text-white shrink-0 cursor-pointer"
+            >
               <span className="sm:hidden">⇅</span>
               <span className="hidden sm:inline">⇄</span>
             </button>
