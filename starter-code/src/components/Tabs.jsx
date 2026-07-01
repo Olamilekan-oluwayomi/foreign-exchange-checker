@@ -1,5 +1,6 @@
-import { useState } from "react";
 import chevronDown from "../assets/images/icon-chevron-down.svg";
+
+import { useState, useEffect, useRef } from "react";
 
 export default function Tabs({
   activeTab,
@@ -7,16 +8,29 @@ export default function Tabs({
   favoritesCount,
   logCount,
 }) {
+  const [isDropedDown, setIsDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const tabs = [
     { id: "history", label: "HISTORY" },
     { id: "compare", label: "COMPARE" },
     { id: "favorites", label: "FAVORITES", count: favoritesCount },
     { id: "log", label: "LOG", count: logCount },
   ];
-  const [isDropedDown, setIsDropdown] = useState(false);
 
   return (
-    <div className="px-4">
+    <div className="px-4" ref={dropdownRef}>
       {/* Mobile: dropdown-style button */}
       <button
         className="sm:hidden w-full flex items-center justify-between bg-neutral-900 rounded-xl px-4 py-3 text-lg font-bold tracking-widest text-white"

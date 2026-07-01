@@ -6,15 +6,6 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.key === "Escape") onClose();
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
-
-  useEffect(() => {
     async function fetchCurrencies() {
       try {
         const res = await fetch("https://api.frankfurter.dev/v1/currencies");
@@ -35,7 +26,18 @@ export default function CurrencyPicker({ activePicker, onSelect, onClose }) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 animate-fadeIn">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 animate-fadeIn"
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          onClose();
+        }
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="bg-neutral-900 w-full sm:w-96 rounded-t-2xl sm:rounded-2xl p-4 max-h-[70vh] flex flex-col animate-slideUp sm:animate-fadeScale">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm sm:text-xs font-bold tracking-widest text-neutral-300">
