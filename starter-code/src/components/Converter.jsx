@@ -11,6 +11,8 @@ export default function Converter({
   rate,
   onOpenPicker,
   onSwap,
+  onFavorite,
+  isFavorited,
 }) {
   return (
     <div className="px-4 py-5">
@@ -56,8 +58,15 @@ export default function Converter({
           </p>
 
           <div className="flex gap-2">
-            <button className="bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-[13px]  lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
-              ★ FAVORITED
+            <button
+              onClick={onFavorite}
+              className={`"bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-[13px]  lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer ${
+                isFavorited
+                  ? "bg-lime-400 text-black"
+                  : "bg-neutral-800 text-neutral-200"
+              }`}
+            >
+              ★ {isFavorited ? "FAVORITED" : "FAVORITE"}
             </button>
             <button className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-[13px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
               LOG CONVERSION

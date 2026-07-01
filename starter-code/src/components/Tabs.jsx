@@ -1,14 +1,18 @@
 import { useState } from "react";
 import chevronDown from "../assets/images/icon-chevron-down.svg";
 
-const tabs = [
-  { id: "history", label: "HISTORY" },
-  { id: "compare", label: "COMPARE" },
-  { id: "favorites", label: "FAVORITES", count: 30 },
-  { id: "log", label: "LOG", count: 8 },
-];
-
-export default function Tabs({ activeTab, setActiveTab }) {
+export default function Tabs({
+  activeTab,
+  setActiveTab,
+  favoritesCount,
+  logCount,
+}) {
+  const tabs = [
+    { id: "history", label: "HISTORY" },
+    { id: "compare", label: "COMPARE" },
+    { id: "favorites", label: "FAVORITES", count: favoritesCount },
+    { id: "log", label: "LOG", count: logCount },
+  ];
   const [isDropedDown, setIsDropdown] = useState(false);
 
   return (
