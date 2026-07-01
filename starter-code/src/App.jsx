@@ -128,7 +128,14 @@ export default function App() {
         favoritesCount={favorites.length}
         logCount={log.length}
       />
-      {activeTab === "history" && <History />}
+      {activeTab === "history" && (
+        <History
+          fromCurrency={fromCurrency}
+          toCurrency={toCurrency}
+          range={range}
+          setRange={setRange}
+        />
+      )}
       {activeTab === "compare" && <Compare />}
       {activeTab === "favorites" && (
         <Favorites
