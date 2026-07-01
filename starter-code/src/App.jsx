@@ -8,6 +8,7 @@ import Compare from "./components/Compare";
 import Favorites from "./components/Favorites";
 import Log from "./components/Log";
 import CurrencyPicker from "./components/CurrencyPicker";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
   const [amount, setAmount] = useState(1);
@@ -16,25 +17,14 @@ export default function App() {
   const [convertedAmount, setConvertedAmount] = useState(null);
   const [rate, setRate] = useState(null);
 
-  const [favorites, setFavorites] = useState([]);
-  const [log, setLog] = useState([]);
+  const [favorites, setFavorites] = useLocalStorage("fx-favorites", []);
+  const [log, setLog] = useLocalStorage("fx-log", []);
 
   const [activeTab, setActiveTab] = useState("history");
   const [range, setRange] = useState("1M");
 
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [activePicker, setActivePicker] = useState(null);
-
-  // Load favorites from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("fx-favorites");
-    if (saved) setFavorites(JSON.parse(saved));
-  }, []);
-
-  // Save favorites to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("fx-favorites", JSON.stringify(favorites));
-  }, [favorites]);
 
   function handleSwap() {
     setFromCurrency(toCurrency);
@@ -55,6 +45,19 @@ export default function App() {
     } else {
       setFavorites([...favorites, { from: fromCurrency, to: toCurrency }]);
     }
+  }
+
+  function handleLog() {
+    const newItem = {
+      from: fromCurrency,
+      to: toCurrency,
+      amount: amount,
+      convertedAmount: convertedAmount,
+      rate: rate,
+      date: new Date().toISOString(),
+    };
+
+    setLog([...log, newItem]);
   }
 
   useEffect(() => {
@@ -117,6 +120,7 @@ export default function App() {
         isFavorited={favorites.some(
           (fav) => fav.from === fromCurrency && fav.to === toCurrency,
         )}
+        onLog={handleLog}
       />
       <Tabs
         activeTab={activeTab}
@@ -137,7 +141,13 @@ export default function App() {
           }
         />
       )}
-      {activeTab === "log" && <Log />}
+      {activeTab === "log" && (
+        <Log
+          log={log}
+          onDelete={(index) => setLog(log.filter((_, i) => i !== index))}
+          onClear={() => setLog([])}
+        />
+      )}
 
       {isPickerOpen && (
         <CurrencyPicker

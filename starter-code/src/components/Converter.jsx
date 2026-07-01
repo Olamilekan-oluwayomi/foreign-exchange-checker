@@ -13,6 +13,7 @@ export default function Converter({
   onSwap,
   onFavorite,
   isFavorited,
+  onLog,
 }) {
   return (
     <div className="px-4 py-5">
@@ -68,7 +69,10 @@ export default function Converter({
             >
               ★ {isFavorited ? "FAVORITED" : "FAVORITE"}
             </button>
-            <button className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-[13px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer">
+            <button
+              onClick={onLog}
+              className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-[13px] lg:text-lg font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer"
+            >
               LOG CONVERSION
             </button>
           </div>

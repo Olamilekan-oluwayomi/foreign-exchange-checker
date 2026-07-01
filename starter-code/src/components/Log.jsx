@@ -1,32 +1,5 @@
-const logEntries = [
-  {
-    from: "1,000",
-    fromCode: "USD",
-    to: "853.02",
-    toCode: "EUR",
-    rate: "0.8530",
-    date: "MAY 14, 16:00",
-  },
-  {
-    from: "500",
-    fromCode: "GBP",
-    to: "73,660",
-    toCode: "JPY",
-    rate: "157.91",
-    date: "MAY 13, 09:30",
-  },
-  {
-    from: "2,000",
-    fromCode: "EUR",
-    to: "2,172.40",
-    toCode: "USD",
-    rate: "1.0862",
-    date: "MAY 12, 14:15",
-  },
-];
-
-export default function Log() {
-  if (logEntries.length === 0) {
+export default function Log({ log, onDelete, onClear }) {
+  if (log.length === 0) {
     return (
       <div className="px-4 py-10 text-center text-neutral-500 text-xs tracking-widest">
         NO CONVERSIONS LOGGED YET
@@ -40,36 +13,43 @@ export default function Log() {
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
           <p className="text-xs text-neutral-500 tracking-widest">
             CONVERSION LOG{" "}
-            <span className="text-white font-bold">
-              {logEntries.length} ENTRIES
-            </span>
+            <span className="text-white font-bold">{log.length} ENTRIES</span>
           </p>
-          <button className="text-[10px] text-red-400 tracking-widest">
+          <button
+            onClick={onClear}
+            className="text-[10px] text-red-400 tracking-widest"
+          >
             CLEAR ALL
           </button>
         </div>
 
-        {logEntries.map((entry, i) => (
+        {log.map((entry, i) => (
           <div
             key={i}
             className={`flex items-center justify-between px-4 py-3 ${
-              i !== logEntries.length - 1 ? "border-b border-neutral-900" : ""
+              i !== log.length - 1 ? "border-b border-neutral-900" : ""
             }`}
           >
             <div>
               <p className="text-sm font-bold text-white">
-                {entry.from}{" "}
-                <span className="text-neutral-500">{entry.fromCode}</span>
+                {entry.amount.toLocaleString()}{" "}
+                <span className="text-neutral-500">{entry.from}</span>
                 {" → "}
-                <span className="text-lime-400">{entry.to}</span>{" "}
-                <span className="text-neutral-500">{entry.toCode}</span>
+                <span className="text-lime-400">
+                  {entry.convertedAmount.toLocaleString()}
+                </span>{" "}
+                <span className="text-neutral-500">{entry.to}</span>
               </p>
               <p className="text-[10px] text-neutral-500 mt-0.5">
-                @ {entry.rate} · {entry.date}
+                @ {entry.rate.toFixed(4)} ·{" "}
+                {new Date(entry.date).toLocaleString()}
               </p>
             </div>
 
-            <button className="text-neutral-600 hover:text-red-400 text-sm ml-4">
+            <button
+              onClick={() => onDelete(i)}
+              className="text-neutral-600 hover:text-red-400 text-sm ml-4"
+            >
               ✕
             </button>
           </div>
