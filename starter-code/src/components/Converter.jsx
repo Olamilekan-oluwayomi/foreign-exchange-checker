@@ -1,4 +1,6 @@
 import CurrencyPanel from "./CurrencyPanel";
+import vertical from "../assets/images/icon-exchange-vertical.svg";
+import horizontal from "../assets/images/icon-exchange.svg";
 
 export default function Converter({
   amount,
@@ -38,8 +40,13 @@ export default function Converter({
               aria-label="Swap currencies"
               className="flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-neutral-700 bg-neutral-800 text-2xl text-white transition-colors hover:bg-neutral-700"
             >
-              <span className="sm:hidden">||</span>
-              <span className="hidden sm:inline">{"<>"}</span>
+              <span className="sm:hidden">
+                <img src={vertical} alt="exchange icon" />
+              </span>
+              <span className="hidden sm:inline">
+                {" "}
+                <img src={horizontal} alt="exchange icon" />
+              </span>
             </button>
           </div>
 

@@ -102,7 +102,7 @@ export default function Ticker() {
                     {rate.value}
                   </span>
                   {rate.up !== null && (
-                    <span className={movementClass}>{rate.up ? "+" : "-"}</span>
+                    <span className={movementClass}>{rate.up ? "▲" : "▼"}</span>
                   )}
                 </span>
               );
