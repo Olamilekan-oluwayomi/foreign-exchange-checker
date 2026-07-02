@@ -1,4 +1,15 @@
+import { useState, useMemo } from "react";
 import { getFlagUrl } from "../utils/currencyMeta";
+import CurrencyPicker from "./CurrencyPicker";
+
+function formatDisplayAmount(value) {
+  if (value === "" || value === null || value === undefined || value === "-") {
+    return "-";
+  }
+  const number = Number(value);
+  if (!Number.isFinite(number)) return value;
+  return number.toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
 
 export default function CurrencyPanel({
   label,
@@ -7,47 +18,68 @@ export default function CurrencyPanel({
   accent,
   editable,
   onChange,
-  onOpenPicker,
+  onSelectCurrency,
 }) {
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const flagUrl = getFlagUrl(currencyCode);
 
+  const displayValue = editable ? amount : formatDisplayAmount(amount);
+  const inputSize = useMemo(
+    () => Math.max(1, String(displayValue).length),
+    [displayValue],
+  );
+
   return (
-    <div className="bg-neutral-900 rounded-xl p-4 flex-1">
-      <p className="text-neutral-500 text-[14px] sm:text-lg tracking-widest mb-2">
-        {label}
-      </p>
-      <div className="flex items-center justify-between gap-2">
-        {editable ? (
+    // Added flex-1 and min-w-0 to ensure it behaves well in side-by-side layouts
+    <div className="flex flex-1 flex-col rounded-2xl border border-neutral-700 bg-neutral-800 p-5 min-w-[280px]">
+      <p className="mb-2 text-sm tracking-widest text-neutral-300">{label}</p>
+
+      {/* Container for input and button */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Input container: min-w-0 allows it to shrink instead of overflowing */}
+        <div className="min-w-0 flex-1">
           <input
             type="text"
             inputMode="decimal"
-            defaultValue={amount}
-            onChange={(e) => onChange(e.target.value)}
-            className="bg-transparent text-2xl sm:text-2xl font-bold text-white w-2/3 outline-none"
+            size={inputSize}
+            value={displayValue}
+            onChange={editable ? (e) => onChange(e.target.value) : undefined}
+            readOnly={!editable}
+            // w-full ensures input fills the available flex-1 space
+            className={`w-full border-b-2 border-transparent bg-transparent text-3xl font-bold leading-none outline-none transition-colors focus:border-current sm:text-4xl ${
+              accent ? "text-brand-lime" : "text-white"
+            }`}
           />
-        ) : (
-          <span
-            className={`text-2xl sm:text-2xl font-bold ${accent ? "text-lime-400" : "text-white"}`}
-          >
-            {amount}
-          </span>
-        )}
+        </div>
 
-        <button
-          type="button"
-          onClick={onOpenPicker}
-          className="flex items-center gap-1.5 bg-neutral-800 rounded-full px-3 py-1.5 text-[11px] sm:text-sm shrink-0 cursor-pointer"
-        >
-          {flagUrl && (
-            <img
-              src={flagUrl}
-              alt={currencyCode}
-              className="w-5 h-5 rounded-full object-cover"
+        {/* Currency Picker Button: shrink-0 prevents it from being pushed */}
+        <div className="relative shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsPickerOpen(true)}
+            className="flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-600 bg-neutral-700 px-3 py-2.5 transition-colors hover:bg-neutral-600"
+          >
+            {flagUrl && (
+              <img
+                src={flagUrl}
+                alt={currencyCode}
+                className="h-6 w-6 rounded-full object-cover"
+              />
+            )}
+            <span className="text-sm font-bold tracking-widest text-white">
+              {currencyCode}
+            </span>
+            <span className="text-xs text-neutral-300">v</span>
+          </button>
+
+          {isPickerOpen && (
+            <CurrencyPicker
+              currentCode={currencyCode}
+              onSelect={onSelectCurrency}
+              onClose={() => setIsPickerOpen(false)}
             />
           )}
-          <span className="font-semibold">{currencyCode}</span>
-          <span className="text-neutral-500">▾</span>
-        </button>
+        </div>
       </div>
     </div>
   );

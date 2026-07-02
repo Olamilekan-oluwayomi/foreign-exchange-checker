@@ -1,60 +1,91 @@
-export default function Log({ log, onDelete, onClear }) {
+import { formatDistanceToNow } from "date-fns";
+
+function formatTime(timestamp) {
+  const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return "-";
+
+  return formatDistanceToNow(date, { addSuffix: false })
+    .replace("about ", "")
+    .replace(" minutes", "M")
+    .replace(" minute", "M")
+    .replace(" hours", "H")
+    .replace(" hour", "H")
+    .replace(" days", "D")
+    .replace(" day", "D")
+    .toUpperCase();
+}
+
+export default function Log({ log, onDelete, onClearAll }) {
   if (log.length === 0) {
     return (
-      <div className="px-4 py-10 text-center text-neutral-500 text-sm tracking-widest">
-        NO CONVERSIONS LOGGED YET
+      <div className="rounded-2xl bg-neutral-900 px-5 py-16 text-center">
+        <p className="mb-2 text-base font-bold text-white">
+          No conversions logged yet
+        </p>
+        <p className="mx-auto max-w-md text-sm leading-relaxed text-neutral-400">
+          Every conversion is recorded here automatically when you tap LOG
+          CONVERSION. Your log is private to this session and this browser.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-4">
-      <div className="bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
-          <p className="text-[11px] sm:text-xs text-neutral-500 tracking-widest">
-            CONVERSION LOG{" "}
-            <span className="text-white font-bold">{log.length} ENTRIES</span>
-          </p>
+    <section className="rounded-2xl bg-neutral-900 p-5">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+        <p className="text-lg font-bold tracking-widest text-white">
+          CONVERSION LOG
+        </p>
+        <div className="flex items-center justify-between w-full md:w-fit gap-4">
+          <span className="text-sm tracking-widest text-neutral-400">
+            {log.length} LOGGED
+          </span>
           <button
-            onClick={onClear}
-            className="text-[11px] sm:text-xs text-red-400 tracking-widest"
+            type="button"
+            onClick={onClearAll}
+            className="cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-xs font-bold tracking-widest text-neutral-400 transition-colors hover:border-brand-red hover:text-brand-red"
           >
             CLEAR ALL
           </button>
         </div>
+      </div>
 
-        {log.map((entry, i) => (
+      <div className="flex flex-col gap-3">
+        {log.map((entry) => (
           <div
-            key={i}
-            className={`flex items-center justify-between px-4 py-3 ${
-              i !== log.length - 1 ? "border-b border-neutral-900" : ""
-            }`}
+            key={entry.id}
+            className="flex items-center justify-between gap-3 rounded-xl border border-neutral-800 bg-neutral-800 px-4 py-4"
           >
-            <div>
-              <p className="text-sm font-bold text-white">
-                {entry.amount.toLocaleString()}{" "}
-                <span className="text-neutral-500">{entry.from}</span>
-                {" → "}
-                <span className="text-lime-400">
-                  {entry.convertedAmount.toLocaleString()}
-                </span>{" "}
-                <span className="text-neutral-500">{entry.to}</span>
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+              <p className="text-sm tracking-widest text-neutral-400 sm:w-12">
+                {formatTime(entry.timestamp)}
               </p>
-              <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5">
-                @ {entry.rate.toFixed(4)} ·{" "}
-                {new Date(entry.date).toLocaleString()}
+              <p className="text-sm font-bold tracking-widest text-white sm:text-base">
+                {entry.from} {"->"} {entry.to}
               </p>
             </div>
 
-            <button
-              onClick={() => onDelete(i)}
-              className="text-neutral-600 hover:text-red-400 text-sm ml-4"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-6">
+                <p className="text-sm tracking-widest text-white sm:text-base">
+                  {Number(entry.amount).toLocaleString()}
+                </p>
+                <p className="text-sm font-bold tracking-widest text-brand-lime sm:text-base">
+                  {Number(entry.convertedAmount).toLocaleString()}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => onDelete(entry.id)}
+                aria-label="Delete log entry"
+                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-neutral-700 text-xs font-bold text-neutral-400 transition-colors hover:border-brand-red hover:text-brand-red"
+              >
+                DEL
+              </button>
+            </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

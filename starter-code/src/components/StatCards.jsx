@@ -4,11 +4,13 @@ export default function StatCards({ fromCurrency, toCurrency }) {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    if (!fromCurrency || !toCurrency) return;
+    if (!fromCurrency || !toCurrency || fromCurrency === toCurrency) {
+      setStats(null);
+      return;
+    }
 
     async function fetchStats() {
       try {
-        const today = new Date().toISOString().split("T")[0];
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         const yesterdayStr = yesterday.toISOString().split("T")[0];
@@ -24,15 +26,20 @@ export default function StatCards({ fromCurrency, toCurrency }) {
 
         const todayData = await todayRes.json();
         const yesterdayData = await yesterdayRes.json();
+        const last = todayData.rates?.[toCurrency];
+        const open = yesterdayData.rates?.[toCurrency];
 
-        const last = todayData.rates[toCurrency];
-        const open = yesterdayData.rates[toCurrency];
+        if (last == null || open == null) {
+          setStats(null);
+          return;
+        }
+
         const change = last - open;
         const pctChange = (change / open) * 100;
-
         setStats({ open, last, change, pctChange });
       } catch (error) {
         console.error(error);
+        setStats(null);
       }
     }
 
@@ -51,35 +58,37 @@ export default function StatCards({ fromCurrency, toCurrency }) {
         },
         {
           label: "% CHANGE",
-          value: `${stats.pctChange >= 0 ? "▲" : "▼"} ${stats.pctChange >= 0 ? "+" : ""}${stats.pctChange.toFixed(2)}%`,
+          value: `${stats.pctChange >= 0 ? "+ " : "- "}${Math.abs(
+            stats.pctChange,
+          ).toFixed(2)}%`,
           accent: true,
           up: stats.pctChange >= 0,
         },
       ]
     : [
-        { label: "OPEN", value: "—", accent: false },
-        { label: "LAST", value: "—", accent: false },
-        { label: "CHANGE", value: "—", accent: false },
-        { label: "% CHANGE", value: "—", accent: false },
+        { label: "OPEN", value: "-", accent: false },
+        { label: "LAST", value: "-", accent: false },
+        { label: "CHANGE", value: "-", accent: false },
+        { label: "% CHANGE", value: "-", accent: false },
       ];
 
   return (
-    <div className="grid grid-cols-2 items-center sm:flex sm:flex-wrap gap-2">
-      {items.map((s) => (
-        <div key={s.label} className="bg-neutral-900 rounded-xl p-3 sm:w-fit">
-          <p className="text-neutral-500 text-[14px] sm:text-lg tracking-widest mb-1">
-            {s.label}
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:w-[640px]">
+      {items.map((stat) => (
+        <div key={stat.label} className="rounded-2xl bg-neutral-900 p-5">
+          <p className="mb-4 text-sm tracking-widest text-neutral-400">
+            {stat.label}
           </p>
           <p
-            className={`text-md sm:text-md font-bold whitespace-nowrap ${
-              s.accent
-                ? s.up
-                  ? "text-lime-400"
-                  : "text-red-400"
+            className={`whitespace-nowrap text-2xl font-bold tracking-wider ${
+              stat.accent
+                ? stat.up
+                  ? "text-brand-green"
+                  : "text-brand-red"
                 : "text-white"
             }`}
           >
-            {s.value}
+            {stat.value}
           </p>
         </div>
       ))}

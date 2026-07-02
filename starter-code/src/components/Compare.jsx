@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { getFlagUrl } from "../utils/currencyMeta";
 
 const BASE_PAIRS = [
@@ -22,12 +22,17 @@ export default function Compare({
   const [rates, setRates] = useState({});
   const [names, setNames] = useState({});
 
-  const DEFAULT_PAIRS = BASE_PAIRS.filter((code) => code !== fromCurrency);
+  const defaultPairs = useMemo(
+    () => BASE_PAIRS.filter((code) => code !== fromCurrency),
+    [fromCurrency],
+  );
 
   useEffect(() => {
     async function fetchData() {
+      if (!amount) return;
+
       try {
-        const codes = DEFAULT_PAIRS.join(",");
+        const codes = defaultPairs.join(",");
 
         const [ratesRes, namesRes] = await Promise.all([
           fetch(
@@ -47,24 +52,38 @@ export default function Compare({
     }
 
     fetchData();
-  }, [fromCurrency, amount]);
+  }, [fromCurrency, amount, defaultPairs]);
+
+  if (!amount) {
+    return (
+      <div className="rounded-2xl bg-neutral-900 px-5 py-16 text-center">
+        <p className="mb-2 text-sm font-bold tracking-widest text-white">
+          NO COMPARISON AVAILABLE
+        </p>
+        <p className="mx-auto max-w-sm text-xs leading-relaxed text-neutral-400">
+          Enter an amount in SEND above to see what your money is worth in other
+          currencies.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="px-4 py-4">
-      <div className="bg-neutral-950 border border-neutral-900 rounded-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900">
-          <p className="text-sm text-neutral-500 tracking-widest">
-            MULTI-CURRENCY{" "}
-            <span className="text-white font-bold">
-              {amount.toLocaleString()} FROM {fromCurrency}
-            </span>
-          </p>
-          <p className="text-sm text-neutral-500 tracking-widest">
-            {DEFAULT_PAIRS.length} PAIRS
-          </p>
-        </div>
+    <section className="rounded-2xl bg-neutral-900 p-5">
+      <div className="mb-5 flex flex-col md:flex-row items-start justify-between gap-4">
+        <p className="text-xs tracking-widest text-neutral-400">
+          MULTI-CURRENCY{" "}
+          <span className="font-bold text-base text-white">
+            {Number(amount).toLocaleString()} FROM {fromCurrency}
+          </span>
+        </p>
+        <p className="text-xs tracking-widest text-neutral-400">
+          {defaultPairs.length} PAIRS
+        </p>
+      </div>
 
-        {DEFAULT_PAIRS.map((code, i) => {
+      <div className="flex flex-col gap-3">
+        {defaultPairs.map((code) => {
           const value = rates[code];
           const isFav = favorites.some(
             (fav) => fav.from === fromCurrency && fav.to === code,
@@ -73,23 +92,19 @@ export default function Compare({
           return (
             <div
               key={code}
-              className={`flex items-center justify-between px-4 py-3 ${
-                i !== DEFAULT_PAIRS.length - 1
-                  ? "border-b border-neutral-900"
-                  : ""
-              }`}
+              className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-800 px-4 py-3 transition-colors hover:bg-neutral-700 focus-within:border-brand-lime"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-4">
                 <img
                   src={getFlagUrl(code)}
                   alt={code}
-                  className="w-6 h-6 rounded-full object-cover"
+                  className="h-8 w-8 shrink-0 rounded-full object-cover"
                 />
-                <div>
-                  <p className="text-sm font-bold text-white tracking-widest">
+                <div className="min-w-0">
+                  <p className="text-base font-bold tracking-widest text-white">
                     {code}
                   </p>
-                  <p className="text-sm lg:text-base text-neutral-500">
+                  <p className="truncate text-xs text-neutral-400">
                     {names[code] ?? ""}
                   </p>
                 </div>
@@ -97,28 +112,30 @@ export default function Compare({
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <p className="text-sm font-bold text-white">
-                    {value ? value.toLocaleString() : "—"}
+                  <p className="text-base md:text-lg font-bold tracking-widest text-white">
+                    {value ? value.toLocaleString() : "-"}
                   </p>
-                  <p className="text-sm lg:text-base text-neutral-500">
-                    @ {value ? (value / amount).toFixed(4) : "—"}
+                  <p className="text-xs md:text-base text-neutral-400">
+                    @ {value ? (value / Number(amount)).toFixed(4) : "-"}
                   </p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => onToggleFavorite(code)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm border ${
+                  aria-label={isFav ? "Remove favorite" : "Add favorite"}
+                  className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-colors ${
                     isFav
-                      ? "bg-lime-900/30 border-lime-800 text-lime-400"
-                      : "bg-neutral-900 border-neutral-700 text-neutral-500"
+                      ? "border-brand-lime bg-brand-lime-dark text-brand-lime"
+                      : "border-neutral-700 text-neutral-400 hover:border-brand-lime hover:text-brand-lime"
                   }`}
                 >
-                  ★
+                  &#9733;
                 </button>
               </div>
             </div>
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

@@ -11,7 +11,7 @@ import CurrencyPicker from "./components/CurrencyPicker";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState(1000);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
   const [convertedAmount, setConvertedAmount] = useState(null);
@@ -49,15 +49,16 @@ export default function App() {
 
   function handleLog() {
     const newItem = {
+      id: crypto.randomUUID(),
       from: fromCurrency,
       to: toCurrency,
       amount: amount,
       convertedAmount: convertedAmount,
       rate: rate,
-      date: new Date().toISOString(),
+      timestamp: new Date().toISOString(),
     };
 
-    setLog([...log, newItem]);
+    setLog([newItem, ...log]);
   }
 
   function handleLoadFavorite(from, to) {
@@ -108,80 +109,81 @@ export default function App() {
     <div className="min-h-screen bg-black text-white">
       <Header />
       <Ticker />
-      <Converter
-        amount={amount}
-        setAmount={setAmount}
-        fromCurrency={fromCurrency}
-        setFromCurrency={setFromCurrency}
-        toCurrency={toCurrency}
-        setToCurrency={setToCurrency}
-        convertedAmount={convertedAmount}
-        rate={rate}
-        onOpenPicker={(type) => {
-          setActivePicker(type);
-          setIsPickerOpen(true);
-        }}
-        onSwap={handleSwap}
-        onFavorite={handleFavorite}
-        isFavorited={favorites.some(
-          (fav) => fav.from === fromCurrency && fav.to === toCurrency,
-        )}
-        onLog={handleLog}
-      />
-      <Tabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        favoritesCount={favorites.length}
-        logCount={log.length}
-      />
-      {activeTab === "history" && (
-        <History
+      <main className="mx-auto w-full max-w-[1092px] px-6 py-12 sm:px-8 lg:px-0">
+        <Converter
+          amount={amount}
+          setAmount={setAmount}
           fromCurrency={fromCurrency}
           toCurrency={toCurrency}
-          range={range}
-          setRange={setRange}
+          convertedAmount={convertedAmount}
+          rate={rate}
+          onSelectFrom={setFromCurrency}
+          onSelectTo={setToCurrency}
+          onSwap={handleSwap}
+          onFavorite={handleFavorite}
+          isFavorited={favorites.some(
+            (fav) => fav.from === fromCurrency && fav.to === toCurrency,
+          )}
+          onLog={handleLog}
         />
-      )}
-      {activeTab === "compare" && (
-        <Compare
-          fromCurrency={fromCurrency}
-          amount={amount}
-          favorites={favorites}
-          onToggleFavorite={(to) => {
-            const exists = favorites.some(
-              (fav) => fav.from === fromCurrency && fav.to === to,
-            );
-            if (exists) {
+        <Tabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          favoritesCount={favorites.length}
+          logCount={log.length}
+        />
+        {activeTab === "history" && (
+          <History
+            fromCurrency={fromCurrency}
+            toCurrency={toCurrency}
+            rate={rate}
+            range={range}
+            onRangeChange={setRange}
+          />
+        )}
+        {activeTab === "compare" && (
+          <Compare
+            fromCurrency={fromCurrency}
+            amount={amount}
+            favorites={favorites}
+            onToggleFavorite={(to) => {
+              const exists = favorites.some(
+                (fav) => fav.from === fromCurrency && fav.to === to,
+              );
+              if (exists) {
+                setFavorites(
+                  favorites.filter(
+                    (fav) => !(fav.from === fromCurrency && fav.to === to),
+                  ),
+                );
+              } else {
+                setFavorites([...favorites, { from: fromCurrency, to }]);
+              }
+            }}
+          />
+        )}
+        {activeTab === "favorites" && (
+          <Favorites
+            favorites={favorites}
+            amount={amount}
+            onUnfavorite={(from, to) =>
               setFavorites(
                 favorites.filter(
-                  (fav) => !(fav.from === fromCurrency && fav.to === to),
+                  (fav) => !(fav.from === from && fav.to === to),
                 ),
-              );
-            } else {
-              setFavorites([...favorites, { from: fromCurrency, to }]);
+              )
             }
-          }}
-        />
-      )}
-      {activeTab === "favorites" && (
-        <Favorites
-          favorites={favorites}
-          amount={amount}
-          onUnfavorite={(from, to) =>
-            setFavorites(
-              favorites.filter((fav) => !(fav.from === from && fav.to === to)),
-            )
-          }
-          onLoadPair={handleLoadFavorite}
-        />
-      )}
-      {activeTab === "log" && (
-        <Log
-          log={log}
-          onDelete={(index) => setLog(log.filter((_, i) => i !== index))}
-          onClear={() => setLog([])}
-        />
-      )}
+            onLoadPair={handleLoadFavorite}
+          />
+        )}
+        {activeTab === "log" && (
+          <Log
+            log={log}
+            onDelete={(id) => setLog(log.filter((entry) => entry.id !== id))}
+            onClearAll={() => setLog([])}
+          />
+        )}
+      </main>
 
       {isPickerOpen && (
         <CurrencyPicker
@@ -191,6 +193,7 @@ export default function App() {
             else setToCurrency(code);
           }}
           onClose={() => setIsPickerOpen(false)}
+          currentCode={activePicker === "from" ? fromCurrency : toCurrency}
         />
       )}
     </div>

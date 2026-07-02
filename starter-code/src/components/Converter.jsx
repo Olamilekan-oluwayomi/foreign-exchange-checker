@@ -4,80 +4,84 @@ export default function Converter({
   amount,
   setAmount,
   fromCurrency,
-  setFromCurrency,
   toCurrency,
-  setToCurrency,
   convertedAmount,
   rate,
-  onOpenPicker,
+  onSelectFrom,
+  onSelectTo,
   onSwap,
   onFavorite,
   isFavorited,
   onLog,
 }) {
   return (
-    <div className="px-4 py-5">
-      <h2 className="text-neutral-300 text-[0.95rem] sm:text-base lg:text-lg tracking-widest mb-4">
+    <section className="mb-10">
+      <h2 className="mb-5 text-2xl font-bold tracking-widest text-white sm:text-3xl">
         CHECK THE RATE
       </h2>
 
-      <div className="bg-neutral-950 border border-neutral-900 rounded-2xl p-5">
-        <div className="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-3">
+      <div className="rounded-3xl bg-neutral-900 p-6 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-5 lg:p-6">
+        <div className="flex flex-col items-stretch gap-6 sm:flex-row sm:items-center">
           <CurrencyPanel
             label="SEND"
             amount={amount}
             currencyCode={fromCurrency}
             editable
             onChange={setAmount}
-            onOpenPicker={() => onOpenPicker("from")}
+            onSelectCurrency={onSelectFrom}
           />
 
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center">
             <button
+              type="button"
               onClick={onSwap}
-              className="bg-neutral-800 rounded-md w-9 h-9 flex items-center justify-center text-white shrink-0 cursor-pointer"
+              aria-label="Swap currencies"
+              className="flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-neutral-700 bg-neutral-800 text-2xl text-white transition-colors hover:bg-neutral-700"
             >
-              <span className="sm:hidden">⇅</span>
-              <span className="hidden sm:inline">⇄</span>
+              <span className="sm:hidden">||</span>
+              <span className="hidden sm:inline">{"<>"}</span>
             </button>
           </div>
 
           <CurrencyPanel
             label="RECEIVE"
-            amount={convertedAmount ?? "—"}
+            amount={convertedAmount ?? "-"}
             currencyCode={toCurrency}
             accent
-            onOpenPicker={() => onOpenPicker("to")}
+            onSelectCurrency={onSelectTo}
           />
         </div>
 
-        <div className="border-t border-dashed border-neutral-800 my-4" />
+        <div className="my-6 border-t border-dashed border-neutral-700" />
 
-        <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 text-center sm:text-left">
-          <p className="text-neutral-500 text-[0.95rem] sm:text-sm md:text-base">
-            1 {fromCurrency} = {rate ? rate.toFixed(4) : "—"} {toCurrency}
+        <div className="flex flex-col items-center justify-between gap-5 text-center sm:flex-row sm:text-left">
+          <p className="text-sm tracking-widest text-neutral-300">
+            1 {fromCurrency} = {rate ? rate.toFixed(4) : "-"} {toCurrency}
           </p>
 
-          <div className="flex gap-2">
+          <div className="flex w-full gap-3 sm:w-auto">
             <button
+              type="button"
               onClick={onFavorite}
-              className={`"bg-lime-400 border-2 border-transparent hover:bg-transparent hover:text-lime-400 hover:border-2 hover:border-lime-900 transition-all text-black text-xs md:text-base font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer ${
+              className={`flex-1 cursor-pointer rounded-lg px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest transition-colors sm:flex-none ${
                 isFavorited
-                  ? "bg-lime-400 text-black"
-                  : "bg-neutral-800 text-neutral-200"
+                  ? "bg-brand-lime text-black hover:bg-brand-lime/80"
+                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
               }`}
             >
-              ★ {isFavorited ? "FAVORITED" : "FAVORITE"}
+              <span className="mr-2">&#9733;</span>
+              {isFavorited ? "FAVORITED" : "FAVORITE"}
             </button>
             <button
+              type="button"
               onClick={onLog}
-              className="border-2 border-lime-900 text-lime-400 hover:bg-lime-400 hover:text-black hover:border-transparent text-xs md:text-base font-bold tracking-widest px-5 py-2.5 rounded-lg cursor-pointer"
+              className="flex-1 cursor-pointer rounded-lg border border-brand-lime px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest text-brand-lime transition-colors hover:bg-brand-lime hover:text-black sm:flex-none"
             >
               LOG CONVERSION
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,6 +1,5 @@
+import { useState } from "react";
 import chevronDown from "../assets/images/icon-chevron-down.svg";
-
-import { useState, useEffect, useRef } from "react";
 
 export default function Tabs({
   activeTab,
@@ -8,20 +7,6 @@ export default function Tabs({
   favoritesCount,
   logCount,
 }) {
-  const [isDropedDown, setIsDropdown] = useState(false);
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsDropdown(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   const tabs = [
     { id: "history", label: "HISTORY" },
     { id: "compare", label: "COMPARE" },
@@ -29,38 +14,46 @@ export default function Tabs({
     { id: "log", label: "LOG", count: logCount },
   ];
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const active = tabs.find((tab) => tab.id === activeTab);
+
   return (
-    <div className="px-4" ref={dropdownRef}>
-      {/* Mobile: dropdown-style button */}
+    <nav className="mb-5">
       <button
-        className="sm:hidden w-full flex items-center justify-between bg-neutral-900 rounded-xl px-4 py-3 text-lg font-bold tracking-widest text-white"
-        onClick={() => setIsDropdown((prev) => !prev)}
-        onKeyDown={(e) => {
-          if (e.key === "Escape") setIsDropdown(false);
-        }}
+        type="button"
+        className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-neutral-700 bg-neutral-900 px-5 py-4 text-lg font-bold tracking-widest text-white sm:hidden"
+        onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
-        <span>{tabs.find((t) => t.id === activeTab).label}</span>
-        <img src={chevronDown} alt="" className="w-6 h-6" />
+        <div className="flex items-center gap-2">
+          <span>{active.label}</span>
+          {active.count > 0 && (
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-lime-dark px-1.5 text-[10px] text-brand-lime">
+              {active.count}
+            </span>
+          )}
+        </div>
+        <img src={chevronDown} alt="" className="h-5 w-5" />
       </button>
 
-      {isDropedDown && (
-        <div className="sm:hidden mt-1 bg-neutral-900 rounded-xl overflow-hidden">
+      {isDropdownOpen && (
+        <div className="mt-2 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 sm:hidden">
           {tabs.map((tab) => {
             const isActive = tab.id === activeTab;
             return (
               <button
+                type="button"
                 key={tab.id}
-                className={`w-full flex items-center justify-between px-4 py-3 text-[0.95rem] font-bold tracking-widest ${
+                className={`flex w-full cursor-pointer items-center justify-between px-5 py-4 text-sm font-bold tracking-widest ${
                   isActive ? "text-white" : "text-neutral-500"
                 }`}
                 onClick={() => {
                   setActiveTab(tab.id);
-                  setIsDropdown(false);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>{tab.label}</span>
-                {tab.count !== undefined && (
-                  <span className="bg-lime-900/40 text-lime-400 text-[11px] rounded-full w-5 h-5 flex items-center justify-center">
+                {tab.count > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-lime-dark px-1.5 text-[10px] text-brand-lime">
                     {tab.count}
                   </span>
                 )}
@@ -70,23 +63,23 @@ export default function Tabs({
         </div>
       )}
 
-      {/* Tablet/Desktop: horizontal tab row */}
-      <div className="hidden sm:flex items-center gap-6 border-b border-neutral-900">
+      <div className="hidden items-center gap-10 border-b border-neutral-800 sm:flex">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
           return (
             <button
+              type="button"
               key={tab.id}
-              className={`flex items-center gap-1.5 pb-3 text-[0.95rem] sm:text-base font-bold tracking-widest border-b-2 -mb-px cursor-pointer ${
+              className={`flex cursor-pointer items-center gap-2 border-b-2 pb-3 text-lg font-bold tracking-widest transition-colors ${
                 isActive
-                  ? "text-white border-lime-400"
-                  : "text-neutral-500 border-transparent"
+                  ? "border-brand-lime text-white"
+                  : "border-transparent text-neutral-400 hover:text-white"
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.label}
-              {tab.count !== undefined && (
-                <span className="bg-lime-900/40 text-lime-400 text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
+              {tab.count > 0 && (
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-lime-dark px-1.5 text-[10px] text-brand-lime">
                   {tab.count}
                 </span>
               )}
@@ -94,6 +87,6 @@ export default function Tabs({
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }

@@ -1,20 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800&display=swap");
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap");
 
 @theme {
   --font-mono: "JetBrains Mono", monospace;
-}
 
-:root {
-  font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1rem);
+  /* Brand Colors */
+  --color-brand-lime: #cef739;
+  --color-brand-lime-dark: #283300;
+  --color-brand-green: #42eb05;
+  --color-brand-red: #ff4141;
+
+  /* Neutrals */
+  --color-neutral-950: #0a0a0a;
+  --color-neutral-900: #171719;
+  --color-neutral-800: #202022;
+  --color-neutral-700: #2e2e2e;
+  --color-neutral-600: #3d3d3d;
+  --color-neutral-500: #454547;
+  --color-neutral-400: #9d9d9d;
+  --color-neutral-300: #c6c6c6;
+  --color-neutral-100: #ffffff;
+
+  /* Spacing */
+  --spacing-0: 0px;
+  --spacing-025: 2px;
+  --spacing-050: 4px;
+  --spacing-075: 6px;
+  --spacing-100: 8px;
+  --spacing-125: 10px;
+  --spacing-150: 12px;
+  --spacing-200: 16px;
+  --spacing-250: 20px;
+  --spacing-300: 24px;
+  --spacing-400: 32px;
+  --spacing-500: 40px;
+  --spacing-600: 48px;
+  --spacing-800: 64px;
+  --spacing-1000: 80px;
+  --spacing-1200: 96px;
+  --spacing-1400: 112px;
+  --spacing-1600: 128px;
+  --spacing-1800: 140px;
+
+  /* Border Radius */
+  --radius-0: 0px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-full: 999px;
+
+  /* Typography */
+  --font-size-preset-1: 40px;
+  --font-size-preset-1-tablet: 32px;
+  --font-size-preset-2: 20px;
+  --font-size-preset-3: 16px;
+  --font-size-preset-4: 14px;
+  --font-size-preset-5: 12px;
+  --font-size-preset-6: 10px;
+
+  --line-height-preset-1: 100%;
+  --line-height-preset-2: 120%;
+  --line-height-preset-2-bold: 140%;
+  --line-height-preset-3: 120%;
+  --line-height-preset-3-bold: 110%;
+  --line-height-preset-4: 120%;
+  --line-height-preset-5: 120%;
+  --line-height-preset-5-medium: 130%;
+  --line-height-preset-6: 100%;
+
+  --letter-spacing-tight: -0.5px;
+  --letter-spacing-normal: 0px;
+  --letter-spacing-wide: 0.5px;
+  --letter-spacing-wider: 1px;
 }
 
 body {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  line-height: 1.5;
+  background-color: #0a0a0a;
+  color: #ffffff;
 }
 
+/* Focus states */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 2px var(--color-neutral-900),
+    0 0 0 4px var(--color-brand-lime);
+}
+
+.focus-ring-group {
+  border-radius: 10px;
+}
+
+.focus-ring-group:focus-within {
+  box-shadow:
+    0 0 0 2px var(--color-neutral-900),
+    0 0 0 4px var(--color-brand-lime);
+}
+
+.focus-ring-group:focus-within input:focus-visible {
+  box-shadow: none;
+}
+
+/* Animations */
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -22,10 +120,6 @@ body {
   to {
     transform: translateX(-50%);
   }
-}
-
-.animate-marquee {
-  animation: marquee 20s linear infinite;
 }
 
 @keyframes fadeIn {
@@ -55,6 +149,10 @@ body {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
 }
 
 .animate-fadeIn {

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
 const PAIRS = [
-  { pair: "USD/EUR", to: "EUR" },
-  { pair: "USD/GBP", to: "GBP" },
+  { pair: "EUR/USD", to: "EUR" },
   { pair: "USD/JPY", to: "JPY" },
+  { pair: "USD/GBP", to: "GBP" },
   { pair: "USD/CHF", to: "CHF" },
   { pair: "USD/CAD", to: "CAD" },
   { pair: "USD/AUD", to: "AUD" },
@@ -51,7 +51,7 @@ export default function Ticker() {
 
           return {
             pair,
-            value: current == null ? "—" : current.toFixed(4),
+            value: current == null ? "-" : current.toFixed(4),
             up:
               current != null && previous != null ? current >= previous : null,
           };
@@ -72,42 +72,37 @@ export default function Ticker() {
   const display =
     rates.length > 0
       ? rates
-      : PAIRS.map(({ pair }) => ({
-          pair,
-          value: "—",
-          up: null,
-        }));
+      : PAIRS.map(({ pair }) => ({ pair, value: "-", up: null }));
 
   return (
-    <div className="bg-neutral-900 overflow-hidden flex items-center text-xs whitespace-nowrap border-b border-neutral-800">
-      <span className="bg-lime-400 text-black font-bold px-3 py-1.5 shrink-0 z-10 text-[0.95rem] sm:text-lg">
+    <div className="bg-neutral-900 overflow-hidden flex items-center text-xs md:text-base whitespace-nowrap border-y border-neutral-800">
+      <span className="bg-brand-lime text-black font-bold px-4 py-3 shrink-0 z-10 text-xs sm:text-sm tracking-widest flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-black" />
         LIVE MARKETS
       </span>
 
       <div className="overflow-hidden flex-1">
-        <div className="flex w-max animate-marquee py-1.5">
+        <div className="flex w-max animate-marquee">
           {[...display, ...display, ...display, ...display].map(
             (rate, index) => {
               const movementClass =
                 rate.up === null
                   ? "text-white"
                   : rate.up
-                    ? "text-lime-400"
-                    : "text-red-400";
+                    ? "text-brand-green"
+                    : "text-brand-red";
 
               return (
                 <span
                   key={index}
-                  className="flex items-center gap-1 px-4 shrink-0"
+                  className="flex items-center gap-2 border-r border-neutral-800 px-5 py-3 shrink-0"
                 >
-                  <span className="text-neutral-200">{rate.pair}</span>
-
+                  <span className="text-neutral-400">{rate.pair}</span>
                   <span className={`font-semibold ${movementClass}`}>
                     {rate.value}
                   </span>
-
                   {rate.up !== null && (
-                    <span className={movementClass}>{rate.up ? "▲" : "▼"}</span>
+                    <span className={movementClass}>{rate.up ? "+" : "-"}</span>
                   )}
                 </span>
               );
