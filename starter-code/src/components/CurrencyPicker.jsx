@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getFlagUrl } from "../utils/currencyMeta";
+import selected from "../assets/images/icon-check.svg";
+import searched from "../assets/images/icon-search.svg";
 
 const POPULAR = ["USD", "EUR", "GBP"];
 
@@ -66,7 +68,7 @@ export default function CurrencyPicker({ onSelect, onClose, currentCode }) {
       </span>
       {code === currentCode && (
         <span className="shrink-0 text-xs font-bold text-brand-lime">
-          SELECTED
+          <img className="icon-lime" src={selected} alt="icon checked" />
         </span>
       )}
     </button>
@@ -84,7 +86,9 @@ export default function CurrencyPicker({ onSelect, onClose, currentCode }) {
       <div className="fixed inset-x-0 bottom-0 z-[101] flex max-h-[78vh] w-full flex-col overflow-hidden rounded-t-3xl border border-neutral-800 bg-neutral-900 sm:absolute sm:inset-x-auto sm:bottom-auto sm:right-0 sm:top-[calc(100%+8px)] sm:w-[320px] sm:rounded-2xl sm:shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
         <div className="border-b border-neutral-800 p-5">
           <div className="flex items-center gap-3 rounded-xl border border-neutral-700 bg-neutral-800 px-4 py-3 focus-ring-group">
-            <span className="text-neutral-400">Search</span>
+            <span className="text-neutral-400">
+              <img className="icon-lime" src={searched} alt="icon checked" />
+            </span>
             <input
               type="text"
               placeholder="Search currencies..."

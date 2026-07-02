@@ -112,6 +112,12 @@ body {
   box-shadow: none;
 }
 
+.icon-lime {
+  /* Increased brightness from 105% to 125% and adjusted contrast */
+  filter: invert(86%) sepia(42%) saturate(836%) hue-rotate(30deg)
+    brightness(1200%) contrast(105%);
+}
+
 /* Animations */
 @keyframes marquee {
   from {
