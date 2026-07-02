@@ -83,31 +83,36 @@ export default function Ticker() {
 
       <div className="overflow-hidden flex-1">
         <div className="flex w-max animate-marquee">
-          {[...display, ...display, ...display, ...display].map(
-            (rate, index) => {
-              const movementClass =
-                rate.up === null
-                  ? "text-white"
-                  : rate.up
-                    ? "text-brand-green"
-                    : "text-brand-red";
+          {[
+            ...display,
+            ...display,
+            ...display,
+            ...display,
+            ...display,
+            ...display,
+          ].map((rate, index) => {
+            const movementClass =
+              rate.up === null
+                ? "text-white"
+                : rate.up
+                  ? "text-brand-green"
+                  : "text-brand-red";
 
-              return (
-                <span
-                  key={index}
-                  className="flex items-center gap-2 border-r border-neutral-800 px-5 py-3 shrink-0"
-                >
-                  <span className="text-neutral-400">{rate.pair}</span>
-                  <span className={`font-semibold ${movementClass}`}>
-                    {rate.value}
-                  </span>
-                  {rate.up !== null && (
-                    <span className={movementClass}>{rate.up ? "▲" : "▼"}</span>
-                  )}
+            return (
+              <span
+                key={index}
+                className="flex items-center gap-2 border-r border-neutral-800 px-5 py-3 shrink-0"
+              >
+                <span className="text-neutral-400">{rate.pair}</span>
+                <span className={`font-semibold ${movementClass}`}>
+                  {rate.value}
                 </span>
-              );
-            },
-          )}
+                {rate.up !== null && (
+                  <span className={movementClass}>{rate.up ? "▲" : "▼"}</span>
+                )}
+              </span>
+            );
+          })}
         </div>
       </div>
     </div>
