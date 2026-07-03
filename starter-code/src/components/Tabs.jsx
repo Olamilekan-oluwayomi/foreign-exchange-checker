@@ -32,7 +32,7 @@ export default function Tabs({
             </span>
           )}
         </div>
-        <img src={chevronDown} alt="" className="h-5 w-5" />
+        <img src={chevronDown} alt="icon down" className="h-5 w-5" />
       </button>
 
       {isDropdownOpen && (
