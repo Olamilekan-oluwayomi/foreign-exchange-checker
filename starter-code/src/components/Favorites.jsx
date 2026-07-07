@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import { useFavorites } from "../context/FavoritesContext";
 
-export default function Favorites({ favorites, onUnfavorite, onLoadPair }) {
+export default function Favorites({ onLoadPair }) {
+  const { favorites, toggleFavorite } = useFavorites();
+
   const [rates, setRates] = useState({});
   const [changes, setChanges] = useState({});
 
@@ -117,7 +120,7 @@ export default function Favorites({ favorites, onUnfavorite, onLoadPair }) {
                 <span
                   onClick={(event) => {
                     event.stopPropagation();
-                    onUnfavorite(fav.from, fav.to);
+                    toggleFavorite(fav.from, fav.to);
                   }}
                   className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-brand-lime bg-brand-lime-dark text-sm text-brand-lime"
                 >

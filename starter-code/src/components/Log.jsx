@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
+import { useFavorites } from "../context/FavoritesContext";
 
 function formatTime(timestamp) {
   const date = new Date(timestamp);
@@ -15,7 +16,9 @@ function formatTime(timestamp) {
     .toUpperCase();
 }
 
-export default function Log({ log, onDelete, onClearAll }) {
+export default function Log() {
+  const { log, deleteLogEntry, clearLog } = useFavorites();
+
   if (log.length === 0) {
     return (
       <div className="rounded-2xl bg-neutral-900 px-5 py-16 text-center">
@@ -42,7 +45,7 @@ export default function Log({ log, onDelete, onClearAll }) {
           </span>
           <button
             type="button"
-            onClick={onClearAll}
+            onClick={clearLog}
             className="cursor-pointer rounded-lg border border-neutral-700 px-4 py-2 text-xs font-bold tracking-widest text-neutral-400 transition-colors hover:border-brand-red hover:text-brand-red"
           >
             CLEAR ALL
@@ -76,7 +79,7 @@ export default function Log({ log, onDelete, onClearAll }) {
               </div>
               <button
                 type="button"
-                onClick={() => onDelete(entry.id)}
+                onClick={() => deleteLogEntry(entry.id)}
                 aria-label="Delete log entry"
                 className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-neutral-700 text-xs font-bold text-neutral-400 transition-colors hover:border-brand-red hover:text-brand-red"
               >

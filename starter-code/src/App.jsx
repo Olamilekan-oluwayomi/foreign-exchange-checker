@@ -70,16 +70,9 @@ export default function App() {
         )}
         {activeTab === "compare" && <Compare />}
         {activeTab === "favorites" && (
-          <Favorites
-            favorites={favorites}
-            amount={amount}
-            onUnfavorite={(from, to) => toggleFavorite(from, to)}
-            onLoadPair={handleLoadFavorite}
-          />
+          <Favorites onLoadPair={handleLoadFavorite} />
         )}
-        {activeTab === "log" && (
-          <Log log={log} onDelete={deleteLogEntry} onClearAll={clearLog} />
-        )}
+        {activeTab === "log" && <Log />}
       </main>
     </div>
   );
