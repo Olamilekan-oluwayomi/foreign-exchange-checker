@@ -1,21 +1,39 @@
+import { useCurrency } from "../context/CurrencyContext";
+import { useFavorites } from "../context/FavoritesContext";
 import CurrencyPanel from "./CurrencyPanel";
 import vertical from "../assets/images/icon-exchange-vertical.svg";
 import horizontal from "../assets/images/icon-exchange.svg";
 
-export default function Converter({
-  amount,
-  setAmount,
-  fromCurrency,
-  toCurrency,
-  convertedAmount,
-  rate,
-  onSelectFrom,
-  onSelectTo,
-  onSwap,
-  onFavorite,
-  isFavorited,
-  onLog,
-}) {
+export default function Converter() {
+  const {
+    amount,
+    setAmount,
+    fromCurrency,
+    toCurrency,
+    convertedAmount,
+    rate,
+    setFromCurrency,
+    setToCurrency,
+    handleSwap,
+  } = useCurrency();
+
+  const { isFavorited, toggleFavorite, addLogEntry } = useFavorites();
+
+  function handleFavorite() {
+    toggleFavorite(fromCurrency, toCurrency);
+  }
+
+  function handleLog() {
+    addLogEntry({
+      from: fromCurrency,
+      to: toCurrency,
+      amount,
+      convertedAmount,
+      rate,
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   return (
     <section className="mb-10">
       <h2 className="mb-5 text-2xl font-bold tracking-widest text-white sm:text-3xl">
@@ -30,13 +48,13 @@ export default function Converter({
             currencyCode={fromCurrency}
             editable
             onChange={setAmount}
-            onSelectCurrency={onSelectFrom}
+            onSelectCurrency={setFromCurrency}
           />
 
           <div className="flex justify-center">
             <button
               type="button"
-              onClick={onSwap}
+              onClick={handleSwap}
               aria-label="Swap currencies"
               className="flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-neutral-700 bg-neutral-800 text-2xl text-white transition-colors hover:bg-neutral-700"
             >
@@ -55,7 +73,7 @@ export default function Converter({
             amount={convertedAmount ?? "-"}
             currencyCode={toCurrency}
             accent
-            onSelectCurrency={onSelectTo}
+            onSelectCurrency={setToCurrency}
           />
         </div>
 
@@ -69,19 +87,19 @@ export default function Converter({
           <div className="flex w-full gap-3 sm:w-auto">
             <button
               type="button"
-              onClick={onFavorite}
+              onClick={handleFavorite}
               className={`flex-1 cursor-pointer rounded-lg px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest transition-colors sm:flex-none ${
-                isFavorited
+                isFavorited(fromCurrency, toCurrency)
                   ? "bg-brand-lime text-black hover:bg-brand-lime/80"
                   : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
               }`}
             >
               <span className="mr-2">&#9733;</span>
-              {isFavorited ? "FAVORITED" : "FAVORITE"}
+              {isFavorited(fromCurrency, toCurrency) ? "FAVORITED" : "FAVORITE"}
             </button>
             <button
               type="button"
-              onClick={onLog}
+              onClick={handleLog}
               className="flex-1 cursor-pointer rounded-lg border border-brand-lime px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest text-brand-lime transition-colors hover:bg-brand-lime hover:text-black sm:flex-none"
             >
               LOG CONVERSION

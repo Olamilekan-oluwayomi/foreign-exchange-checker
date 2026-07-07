@@ -58,20 +58,7 @@ export default function App() {
       <Header />
       <Ticker />
       <main className="mx-auto w-full max-w-[1092px] px-6 py-12 sm:px-8 lg:px-0">
-        <Converter
-          amount={amount}
-          setAmount={setAmount}
-          fromCurrency={fromCurrency}
-          toCurrency={toCurrency}
-          convertedAmount={convertedAmount}
-          rate={rate}
-          onSelectFrom={setFromCurrency}
-          onSelectTo={setToCurrency}
-          onSwap={handleSwap}
-          onFavorite={() => toggleFavorite(fromCurrency, toCurrency)}
-          isFavorited={isFavorited(fromCurrency, toCurrency)}
-          onLog={handleLog}
-        />
+        <Converter />
         <Tabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
