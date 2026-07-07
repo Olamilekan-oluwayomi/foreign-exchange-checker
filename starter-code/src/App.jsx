@@ -11,41 +11,11 @@ import { useCurrency } from "./context/CurrencyContext";
 import { useFavorites } from "./context/FavoritesContext";
 
 export default function App() {
-  const {
-    amount,
-    setAmount,
-    fromCurrency,
-    setFromCurrency,
-    toCurrency,
-    setToCurrency,
-    convertedAmount,
-    rate,
-    handleSwap,
-  } = useCurrency();
-
-  const {
-    favorites,
-    isFavorited,
-    toggleFavorite,
-    log,
-    addLogEntry,
-    deleteLogEntry,
-    clearLog,
-  } = useFavorites();
+  const { fromCurrency, setFromCurrency, setToCurrency } = useCurrency();
+  const { favorites, log } = useFavorites();
 
   const [activeTab, setActiveTab] = useState("history");
   const [range, setRange] = useState("1M");
-
-  function handleLog() {
-    addLogEntry({
-      from: fromCurrency,
-      to: toCurrency,
-      amount: amount,
-      convertedAmount: convertedAmount,
-      rate: rate,
-      timestamp: new Date().toISOString(),
-    });
-  }
 
   function handleLoadFavorite(from, to) {
     setFromCurrency(from);
