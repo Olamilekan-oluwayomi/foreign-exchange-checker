@@ -1,4 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
+import { useCurrency } from "../context/CurrencyContext";
+import { useFavorites } from "../context/FavoritesContext";
 import { getFlagUrl } from "../utils/currencyMeta";
 
 const BASE_PAIRS = [
@@ -13,12 +15,10 @@ const BASE_PAIRS = [
   "BDT",
 ];
 
-export default function Compare({
-  fromCurrency,
-  amount,
-  favorites,
-  onToggleFavorite,
-}) {
+export default function Compare() {
+  const { fromCurrency, amount } = useCurrency();
+  const { favorites, toggleFavorite } = useFavorites();
+
   const [rates, setRates] = useState({});
   const [names, setNames] = useState({});
 
@@ -121,7 +121,7 @@ export default function Compare({
                 </div>
                 <button
                   type="button"
-                  onClick={() => onToggleFavorite(code)}
+                  onClick={() => toggleFavorite(fromCurrency, code)}
                   aria-label={isFav ? "Remove favorite" : "Add favorite"}
                   className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-colors ${
                     isFav

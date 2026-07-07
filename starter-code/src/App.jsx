@@ -66,22 +66,9 @@ export default function App() {
           logCount={log.length}
         />
         {activeTab === "history" && (
-          <History
-            fromCurrency={fromCurrency}
-            toCurrency={toCurrency}
-            rate={rate}
-            range={range}
-            onRangeChange={setRange}
-          />
+          <History range={range} onRangeChange={setRange} />
         )}
-        {activeTab === "compare" && (
-          <Compare
-            fromCurrency={fromCurrency}
-            amount={amount}
-            favorites={favorites}
-            onToggleFavorite={(to) => toggleFavorite(fromCurrency, to)}
-          />
-        )}
+        {activeTab === "compare" && <Compare />}
         {activeTab === "favorites" && (
           <Favorites
             favorites={favorites}

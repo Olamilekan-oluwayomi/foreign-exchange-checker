@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useCurrency } from "../context/CurrencyContext";
 import StatCards from "./StatCards";
 import RangeSelector from "./RangeSelector";
 import RateChart from "./RateChart";
@@ -18,13 +19,9 @@ function getDateStr(daysAgo) {
   return date.toISOString().split("T")[0];
 }
 
-export default function History({
-  fromCurrency,
-  toCurrency,
-  rate,
-  range,
-  onRangeChange,
-}) {
+export default function History({ range, onRangeChange }) {
+  const { fromCurrency, toCurrency, rate } = useCurrency();
+
   const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
