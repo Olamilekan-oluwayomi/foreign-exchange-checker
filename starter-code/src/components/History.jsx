@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useCurrency } from "../context/CurrencyContext";
+import { useSelector } from "react-redux";
 import StatCards from "./StatCards";
 import RangeSelector from "./RangeSelector";
 import RateChart from "./RateChart";
@@ -20,7 +20,9 @@ function getDateStr(daysAgo) {
 }
 
 export default function History({ range, onRangeChange }) {
-  const { fromCurrency, toCurrency, rate } = useCurrency();
+  const { fromCurrency, toCurrency, rate } = useSelector(
+    (state) => state.currency,
+  );
 
   const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

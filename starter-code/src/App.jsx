@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Header from "./components/Header";
 import Ticker from "./components/Ticker";
 import Converter from "./components/Converter";
@@ -7,19 +8,25 @@ import History from "./components/History";
 import Compare from "./components/Compare";
 import Favorites from "./components/Favorites";
 import Log from "./components/Log";
-import { useCurrency } from "./context/CurrencyContext";
+import {
+  setFromCurrency,
+  setToCurrency,
+} from "./features/currency/currencySlice";
 import { useFavorites } from "./context/FavoritesContext";
 
 export default function App() {
-  const { fromCurrency, setFromCurrency, setToCurrency } = useCurrency();
+  const { fromCurrency, toCurrency, rate } = useSelector(
+    (state) => state.currency,
+  );
+  const dispatch = useDispatch();
   const { favorites, log } = useFavorites();
 
   const [activeTab, setActiveTab] = useState("history");
   const [range, setRange] = useState("1M");
 
   function handleLoadFavorite(from, to) {
-    setFromCurrency(from);
-    setToCurrency(to);
+    dispatch(setFromCurrency(from));
+    dispatch(setToCurrency(to));
     setActiveTab("history");
   }
 

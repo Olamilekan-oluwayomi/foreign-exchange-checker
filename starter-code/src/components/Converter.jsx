@@ -1,23 +1,33 @@
-import { useCurrency } from "../context/CurrencyContext";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setAmount,
+  setFromCurrency,
+  setToCurrency,
+  handleSwap,
+  fetchExchangeRate,
+} from "../features/currency/currencySlice";
 import { useFavorites } from "../context/FavoritesContext";
 import CurrencyPanel from "./CurrencyPanel";
 import vertical from "../assets/images/icon-exchange-vertical.svg";
 import horizontal from "../assets/images/icon-exchange.svg";
 
 export default function Converter() {
-  const {
-    amount,
-    setAmount,
-    fromCurrency,
-    toCurrency,
-    convertedAmount,
-    rate,
-    setFromCurrency,
-    setToCurrency,
-    handleSwap,
-  } = useCurrency();
+  const { amount, fromCurrency, toCurrency, convertedAmount, rate } =
+    useSelector((state) => state.currency);
+  const dispatch = useDispatch();
 
   const { isFavorited, toggleFavorite, addLogEntry } = useFavorites();
+
+  useEffect(() => {
+    if (!amount || !fromCurrency || !toCurrency) return;
+
+    const promise = dispatch(
+      fetchExchangeRate({ amount, fromCurrency, toCurrency }),
+    );
+
+    return () => promise.abort();
+  }, [amount, fromCurrency, toCurrency, dispatch]);
 
   function handleFavorite() {
     toggleFavorite(fromCurrency, toCurrency);
@@ -47,14 +57,14 @@ export default function Converter() {
             amount={amount}
             currencyCode={fromCurrency}
             editable
-            onChange={setAmount}
-            onSelectCurrency={setFromCurrency}
+            onChange={(value) => dispatch(setAmount(value))}
+            onSelectCurrency={(code) => dispatch(setFromCurrency(code))}
           />
 
           <div className="flex justify-center">
             <button
               type="button"
-              onClick={handleSwap}
+              onClick={() => dispatch(handleSwap())}
               aria-label="Swap currencies"
               className="flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-neutral-700 bg-neutral-800 text-2xl text-white transition-colors hover:bg-neutral-700"
             >
@@ -73,7 +83,7 @@ export default function Converter() {
             amount={convertedAmount ?? "-"}
             currencyCode={toCurrency}
             accent
-            onSelectCurrency={setToCurrency}
+            onSelectCurrency={(code) => dispatch(setToCurrency(code))}
           />
         </div>
 

@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { useCurrency } from "../context/CurrencyContext";
+import { useSelector } from "react-redux";
 import { useFavorites } from "../context/FavoritesContext";
 import { getFlagUrl } from "../utils/currencyMeta";
 
@@ -16,7 +16,7 @@ const BASE_PAIRS = [
 ];
 
 export default function Compare() {
-  const { fromCurrency, amount } = useCurrency();
+  const { fromCurrency, amount } = useSelector((state) => state.currency);
   const { favorites, toggleFavorite } = useFavorites();
 
   const [rates, setRates] = useState({});
